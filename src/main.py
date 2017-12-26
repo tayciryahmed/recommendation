@@ -8,5 +8,5 @@ if __name__ == "__main__":
     X_df = prepare_data().load_data(config.data_filename)
     X_train, test_df = prepare_data().train_test_split(X_df)
 
-    #NMF
+    # NMF
     print nmf().score(X_train, test_df)

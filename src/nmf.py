@@ -1,5 +1,6 @@
 from sklearn.decomposition import NMF
 
+
 class nmf():
     def __init__(self):
         pass
@@ -14,9 +15,9 @@ class nmf():
         W, H = self.nmf(X_train)
         X = W.dot(H)
         z, k = (0, 0)
-        for i,j,z in zip(test_df['new_user'], test_df['new_item'], test_df['rating']):
-            if i<len(X) and j<X.shape[1]:
-                e = abs(X[i,j] - z)
-                k+=1
+        for i, j, z in zip(test_df['new_user'], test_df['new_item'], test_df['rating']):
+            if i < len(X) and j < X.shape[1]:
+                e = abs(X[i, j] - z)
+                k += 1
 
-        return float(z)/k
+        return float(z) / k
