@@ -9,8 +9,8 @@ class UserItemRecDataProvider:
     self._params = params
     self._data_dir = self.params['data_dir']
     self._extension = ".txt" if 'extension' not in self.params else self.params['extension']
-    self._i_id = 0 if 'itemIdInd' not in self.params else self.params['itemIdInd']
-    self._u_id = 1 if 'userIdInd' not in self.params else self.params['userIdInd']
+    self._i_id = 1 if 'itemIdInd' not in self.params else self.params['itemIdInd']
+    self._u_id = 0 if 'userIdInd' not in self.params else self.params['userIdInd']
     self._r_id = 2 if 'ratingInd' not in self.params else self.params['ratingInd']
     self._major = 'items' if 'major' not in self.params else self.params['major']
     if not (self._major == 'items' or self._major == 'users'):
@@ -18,7 +18,7 @@ class UserItemRecDataProvider:
 
     self._major_ind = self._i_id if self._major == 'items' else self._u_id
     self._minor_ind = self._u_id if self._major == 'items' else self._i_id
-    self._delimiter = '\t' if 'delimiter' not in self.params else self.params['delimiter']
+    self._delimiter = ',' if 'delimiter' not in self.params else self.params['delimiter']
 
     if user_id_map is None or item_id_map is None:
       self._build_maps()
@@ -41,10 +41,16 @@ class UserItemRecDataProvider:
     for source_file in src_files:
       with open(source_file, 'r') as src:
         for line in src.readlines():
+          
           parts = line.strip().split(self._delimiter)
+          
           if len(parts)<3:
             raise ValueError('Encountered badly formatted line in {}'.format(source_file))
+          if int(parts[self._major_ind]) not in major_map.keys():
+            continue  
           key = major_map[int(parts[self._major_ind])]
+          if int(parts[self._minor_ind]) not in minor_map.keys():
+            continue
           value = minor_map[int(parts[self._minor_ind])]
           rating = float(parts[self._r_id])
           #print("Key: {}, Value: {}, Rating: {}".format(key, value, rating))
