@@ -14,10 +14,10 @@ class nmf():
     def score(self, X_train, test_df):
         W, H = self.nmf(X_train)
         X = W.dot(H)
-        z, k = (0, 0)
+        e, k = (0, 0)
         for i, j, z in zip(test_df['new_user'], test_df['new_item'], test_df['rating']):
             if i < len(X) and j < X.shape[1]:
-                e = abs(X[i, j] - z)
-                k += 1
+                e += abs(X[i, j] - z)                
+                k += 1.0
 
-        return float(z) / k
+        return float(e) / k
